@@ -33,8 +33,9 @@ function fn_to_create_table(){
 	include_once dirname( __FILE__ ) . '/table-in-front-end.php';
 }
 function vb_register_user_scripts() {
-    // Enqueue script
-    wp_register_script('my_script', plugins_url() . '/list/my.js', array('jquery'), '1.2.3', false);
+	// Enqueue script
+	wp_enqueue_style('my_style', plugins_url('/assets/css/style.css', __FILE__));
+    wp_register_script('my_script', plugins_url() . '/list/assets/js/script.js', array('jquery'), '1.2.3', false);
     wp_enqueue_script('my_script');
      wp_localize_script( 'my_script', 'my_scripts', array(
            'my_ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -63,7 +64,6 @@ $data = [];
 foreach ( $authors as $message ) {
     $data[] = $message;
 }
-error_log(print_r($data, true));
 echo json_encode($data);
 exit;
 		}
