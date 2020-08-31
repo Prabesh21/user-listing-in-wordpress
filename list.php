@@ -15,34 +15,38 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-add_action('init', 'fn_to_add_shortcode');
-function fn_to_add_shortcode(){
-	add_shortcode('my-table', 'fn_to_create_table');
-	add_action('wp_enqueue_scripts', 'vb_register_user_scripts');
-	add_action('wp_ajax_register_user_front_end', 'register_user_front_end_v');
-    add_action('wp_ajax_nopriv_register_user_front_end', 'register_user_front_end_v');
-}
-function fn_to_create_table(){
-	$user = wp_get_current_user();
-	$roles = ( array ) $user->roles;
-	if( ! is_user_logged_in() or ! ($roles['0'] == 'administrator') )
-        {
-			printf("Restricted");
-			die;
-		}
-	include_once dirname( __FILE__ ) . '/table-in-front-end.php';
-}
-function vb_register_user_scripts() {
-	// Enqueue script
-	wp_enqueue_style('my_style', plugins_url('/assets/css/style.css', __FILE__));
-    wp_register_script('my_script', plugins_url() . '/list/assets/js/script.js', array('jquery'), '1.2.3', false);
-    wp_enqueue_script('my_script');
-     wp_localize_script( 'my_script', 'my_scripts', array(
-           'my_ajax_url' => admin_url( 'admin-ajax.php' ),
-         )
-     );
+class UsersListing{
+	public function __construct()
+	{
+		add_action('init', array($this, 'fn_to_add_shortcode'));		
 	}
-	function register_user_front_end_v() {
+	public function fn_to_add_shortcode(){
+		add_shortcode('my-table', array($this, 'fn_to_create_table'));
+		add_action('wp_enqueue_scripts', array($this, 'vb_register_user_scripts'));
+		add_action('wp_ajax_register_user_front_end', array($this, 'register_user_front_end_v'));
+		add_action('wp_ajax_nopriv_register_user_front_end', array($this, 'register_user_front_end_v'));
+	} 
+	public function fn_to_create_table(){
+		$user = wp_get_current_user();
+		$roles = ( array ) $user->roles;
+		if( ! is_user_logged_in() or ! ($roles['0'] == 'administrator') )
+			{
+				printf("Restricted");
+				die;
+			}
+		include_once dirname( __FILE__ ) . '/table-in-front-end.php';
+	}
+	public function vb_register_user_scripts() {
+		// Enqueue script
+		wp_enqueue_style('my_style', plugins_url('/assets/css/style.css', __FILE__));
+		wp_register_script('my_script', plugins_url() . '/list/assets/js/script.js', array('jquery'), '1.2.3', false);
+		wp_enqueue_script('my_script');
+		wp_localize_script( 'my_script', 'my_scripts', array(
+			   'my_ajax_url' => admin_url( 'admin-ajax.php' ),
+			 )
+		 );
+		}
+	public function register_user_front_end_v() {
 		$my_role = $_POST['my_role'];
 		$my_order = $_POST['my_order'];
 		$order_by = $_POST['order_by'];
@@ -60,10 +64,16 @@ function vb_register_user_scripts() {
 
 
 	// Rendering the result to Ajax
-$data = [];
-foreach ( $authors as $message ) {
-    $data[] = $message;
-}
-echo json_encode($data);
-exit;
+		$data = [];
+			foreach ( $authors as $message ) {
+    		$data[] = $message;	
+			}
+		echo json_encode($data);
+		exit;
 		}
+
+}
+new UsersListing();
+
+
+	
