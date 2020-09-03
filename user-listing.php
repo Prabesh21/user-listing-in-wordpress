@@ -40,8 +40,8 @@ class UserListing{
 	}
 	public function ul_enqueue_scripts() {
 		// Enqueue script
-		wp_register_script('ul_script', plugins_url().'/user-listing-in-wordpress/assets/js/script.js' , array('jquery'), '1.2.3', false);
-		wp_enqueue_style('ul_style', plugins_url().'/user-listing-in-wordpress/assets/css/style.css');
+		wp_register_script('ul_script', plugins_url().'/user-listing-in-wordpress-master/assets/js/script.js' , array('jquery'), '1.2.3', false);
+		wp_enqueue_style('ul_style', plugins_url().'/user-listing-in-wordpress-master/assets/css/style.css');
 		wp_enqueue_script('ul_script');
 		wp_localize_script( 'ul_script', 'ul_scripts', array(
 			   'ul_ajax_url' => admin_url( 'admin-ajax.php' ),
