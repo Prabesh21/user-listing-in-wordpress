@@ -3,19 +3,19 @@ jQuery(document).ready(function($) {
 
         $.ajax({
             type: 'POST',
-            url: my_scripts.my_ajax_url,
-            // dataType: "json",
+            url: ul_scripts.ul_ajax_url,
+            //dataType: 'json',
             data: {
-                action: "register_user_front_end",
+                action: "ul_listing_users_in_frontend",
+                security: ul_scripts.security,
                 my_role: $('#my_role option:selected').val(),
                 my_order: $('#my_order option:selected').val(),
                 order_by: $('#order_by option:selected').val(),
             },
             success: function(response) {
-
-                response = JSON.parse(response);
+                //response = JSON.parse(response);
                 $("#tbody tr:gt(0)").remove();
-                $(response).each(
+                $(response.data).each(
                     function() {
                         $('#tbody').append(
                             '<tr><td>' + this.user_login +
@@ -92,7 +92,8 @@ jQuery(document).ready(function($) {
                 });
 
 
-            }
+            },
+            error: function(results) {}
         });
     });
 });
