@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: User Listing
- * Plugin URI: https://google.com/
+ * Plugin Name: User Listing in Wordpress
+ * Plugin URI: https://your-plugin-url.com/
  * Description: Lists the users in frontend for admin only.
  * Version: 1.1.0.1
- * Author: Intern
- * Author URI: https://Stackoverflow.com
- * Text Domain: user-listing
+ * Author: Prabesh Upreti
+ * Author URI: https://author-url.com/
+ * Text Domain: user-listing-in-wordpress
  * Domain Path: /languages/
  *
  * @package UserListing
@@ -24,8 +24,7 @@ class UserListing{
 		add_shortcode('my-table', array($this, 'ul_to_create_table'));
 		add_action('wp_enqueue_scripts', array($this, 'ul_enqueue_scripts'));
 		add_action('wp_ajax_ul_listing_users_in_frontend', array($this, 'ul_showusers_ajax_request'));
-		add_action('wp_ajax_nopriv_ul_listing_users_in_frontend', array($this, 'ul_showusers_ajax_request'));
-	} 
+		} 
 	public function ul_to_create_table(){
 		$user = wp_get_current_user();
 		$roles = ( array ) $user->roles;
@@ -51,9 +50,9 @@ class UserListing{
 		}
 	public function ul_showusers_ajax_request() {
 		check_ajax_referer('ul-nonce', 'security');
-		$my_role = sanitize_key($_POST['my_role']);
-		$my_order = sanitize_key($_POST['my_order']);
-		$order_by = sanitize_key($_POST['order_by']);
+		$my_role = sanitize_text_field($_POST['my_role']);
+		$my_order = sanitize_text_field($_POST['my_order']);
+		$order_by = sanitize_text_field($_POST['order_by']);
 		global $wpdb;
 		
 		$args = array(
@@ -79,5 +78,3 @@ class UserListing{
 
 }
 new UserListing();
-
-	

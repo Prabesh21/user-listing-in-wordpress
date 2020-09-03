@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
         $.ajax({
             type: 'POST',
             url: ul_scripts.ul_ajax_url,
-            //dataType: 'json',
+
             data: {
                 action: "ul_listing_users_in_frontend",
                 security: ul_scripts.security,
@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
                 order_by: $('#order_by option:selected').val(),
             },
             success: function(response) {
-                //response = JSON.parse(response);
+
                 $("#tbody tr:gt(0)").remove();
                 $(response.data).each(
                     function() {
